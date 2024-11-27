@@ -1,0 +1,2 @@
+# crazyverse
+manifest of crazyverse
