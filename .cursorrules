@@ -1,0 +1,102 @@
+# RASHK-RUS — Cursor Rules
+
+## What This Project Is
+
+RASHK-RUS is a **decentralized capability runtime** — a single Rust binary that unifies:
+- Backend-as-a-service (like Supabase)
+- Workflow automation (like n8n)
+- Mesh networking (like Tailscale)
+- AI agent orchestration (like Claude Code)
+- On-chain payments and identity (like Solana/TON)
+- Desktop-native single binary (like Tauri)
+
+It is built from two merged codebases:
+- **rashk-core** (6 crates) — distributed/decentralized port traits
+- **rusvel** (54 crates) — working application with engines, adapters, API, CLI, frontend
+
+## Architecture
+
+Hexagonal (ports & adapters). Two cores:
+
+### rashk-core: 17 universal port traits
+Designed to work across local, WASM, mesh, cloud, on-chain, and browser targets.
+- Storage: `Store`, `BlobStore`, `SearchIndex`, `VectorStore`
+- Sync: `SyncPort` (CRDT merge between nodes)
+- Events: `EventBus` (pub/sub + replay + cross-node)
+- WASM: `ModuleRegistry`, `ModuleSource`, `ModuleRuntime`
+- Mesh: `MeshPort`, `MeshReceiver`
+- Identity: `IdentityPort`, `TrustPort`
+- Capabilities: `CapabilityPort`
+- AI: `LlmPort`, `AgentPort`
+- Payments: `PaymentPort`
+
+### rusvel-core: 21 application port traits
+Working implementation with SQLite, Ollama/Claude/OpenAI, Axum API, SvelteKit frontend.
+
+## Reference Repos (in ref-repos/)
+
+These repos are cloned for study and porting. **Do NOT modify them.**
+
+| Repo | Maps to RASHK | What to extract |
+|------|---------------|-----------------|
+| `supabase/` | rashk-store, rusvel-db, rusvel-api | Realtime subscriptions, Row Level Security, Storage API, Auth patterns |
+| `n8n/` | flow-engine, rusvel-jobs | Workflow DAG execution, node type system, credential management, webhook triggers |
+| `tailscale/` | rashk-mesh | WireGuard userspace, DERP relay, NAT traversal (STUN/ICE), netmap, magicsock |
+| `ton/` | rashk-identity, PaymentPort | ADNL networking protocol, smart contract patterns, wallet model |
+| `agave/` | PaymentPort | Solana transaction processing, account model, program (smart contract) structure |
+| `claude-code/` | rusvel-agent, rusvel-tool | Agent loop, tool registration, MCP protocol, streaming |
+| `everything-claude-code/` | .claude/ config | Best practices for Claude Code skills, hooks, agents, rules |
+| `tauri/` | rusvel-app, frontend embedding | Rust+webview IPC, plugin system, capability permissions, single binary bundling |
+
+## Key Rules
+
+1. **Engines never import adapter crates.** Depend only on port traits.
+2. **rashk-core ports must be target-universal.** No filesystem paths, no tokio types, no std::path.
+3. **All rashk-core types must be serde Serializable.** For WASM/mesh boundary crossing.
+4. **Each crate < 2000 lines.**
+5. **Every Record has HLC + origin_node.** CRDT merge readiness.
+6. **WASM modules get explicit capability grants.** No ambient authority.
+7. **Use pnpm** (never npm) for frontend.
+8. **Use uv** (never pip) for Python.
+9. **Conventional commits:** feat:, fix:, refactor:, docs:, chore:, test:
+
+## Porting Strategy
+
+When porting from a reference repo:
+1. **Study the abstraction**, not the implementation detail
+2. **Map to existing rashk-core or rusvel-core ports** — don't create new ports unless absolutely necessary
+3. **Write the adapter**, not a new engine — engines use ports, adapters implement them
+4. **Test against the port trait**, not the adapter internals
+5. **Keep crates small** — split if approaching 2000 lines
+
+## File Structure
+
+```
+crates/
+  rashk-*/          RASHK distributed layer (6 crates)
+  rusvel-*/         RUSVEL application layer (~20 adapter crates)
+  *-engine/         Domain engines (13 crates)
+  dept-*/           Department apps (14 crates)
+  rusvel-app/       Binary entry point
+docs/
+  MASTER_PLAN.md    Full roadmap
+  design/           Architecture docs
+  research/         Technology research
+  references/       Per-repo analysis and porting guides
+ref-repos/          Reference repos (gitignored, read-only)
+frontend/           SvelteKit 5 + Tailwind 4
+```
+
+## Current Phase: 1 — Runtime + WASM Module System
+
+Focus: Make RUSVEL engines callable as WASM modules through rashk-core's ModuleRuntime.
+
+## Stack
+
+- Rust 2024, SQLite WAL, Axum, tokio, wasmtime
+- SvelteKit 5, Tailwind 4, pnpm
+- LLM: Ollama, Claude, OpenAI
+- Vector: LanceDB + Arrow
+- Identity: Ed25519 + DID
+- Mesh: QUIC + mDNS (planned)
+- Payments: Solana (planned)

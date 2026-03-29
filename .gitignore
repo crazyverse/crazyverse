@@ -16,3 +16,6 @@ __pycache__/
 *.pyc
 .venv/
 .ruff_cache/
+
+# Reference repos (cloned for study, not committed)
+ref-repos/
