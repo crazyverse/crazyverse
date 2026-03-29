@@ -1,0 +1,59 @@
+/// The universal module interface.
+/// Every WASM capability module implements this.
+///
+/// A module can:
+/// - Register tools (for AI agents)
+/// - Register UI fragments (for the dashboard)
+/// - Handle requests (from the runtime or other modules)
+/// - Subscribe to events (from the event bus)
+
+package rashk:module@0.1.0;
+
+interface types {
+    /// JSON-encoded record
+    type json = string;
+    /// Unique record identifier
+    type record-id = string;
+}
+
+/// What the module exports (runtime calls these)
+interface guest {
+    use types.{json, record-id};
+
+    /// Module metadata
+    manifest: func() -> json;
+
+    /// Handle a request from the runtime or another module
+    handle: func(method: string, input: json) -> json;
+
+    /// List tools this module provides
+    list-tools: func() -> json;
+
+    /// Called when an event the module subscribed to fires
+    on-event: func(kind: string, data: json);
+}
+
+/// What the runtime provides to the module (module calls these)
+interface host {
+    use types.{json, record-id};
+
+    /// Store operations
+    store-get: func(id: record-id) -> option<json>;
+    store-put: func(id: record-id, kind: string, data: json);
+    store-query: func(kind: string, limit: u32) -> json;
+    store-delete: func(id: record-id);
+
+    /// Event bus
+    emit-event: func(kind: string, data: json);
+
+    /// Logging
+    log: func(level: string, message: string);
+
+    /// HTTP (if NetworkOutbound capability granted)
+    http-request: func(method: string, url: string, body: option<json>) -> json;
+}
+
+world module {
+    import host;
+    export guest;
+}

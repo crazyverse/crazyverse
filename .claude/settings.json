@@ -1,0 +1,46 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '## RASHK Phase 0: Design & Research\nUse /phase-check for status, /research for questions, /adr-create for decisions.\nMaster plan: docs/MASTER_PLAN.md'"
+          }
+        ]
+      },
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '## Context Restored\n- Project: RASHK (decentralized OS for work)\n- Phase: 0 (Design & Research)\n- RUSVEL source: /Users/bm/rusvel (existing app, 50 crates)\n- Master plan: docs/MASTER_PLAN.md\n- Use pnpm (not npm), uv (not pip), cargo for Rust'"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // empty' | grep -q 'rashk-core/src/ports.rs' && echo 'WARNING: Editing the constitution (ports.rs). Ensure changes pass /port-audit.' >&2 || true"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // empty' | grep -qE '\\.rs$' && jq -r '.tool_input.file_path' | xargs rustfmt --edition 2024 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  }
+}

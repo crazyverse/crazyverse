@@ -1,0 +1,105 @@
+[package]
+name = "rusvel-app"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "rusvel"
+path = "src/main.rs"
+
+[dependencies]
+# ─── Foundation ───
+rusvel-core   = { workspace = true }
+rusvel-db     = { workspace = true }
+rusvel-llm    = { workspace = true }
+rusvel-agent  = { workspace = true }
+rusvel-event  = { workspace = true }
+rusvel-webhook = { workspace = true }
+rusvel-channel = { workspace = true }
+rusvel-cron = { workspace = true }
+rusvel-memory = { workspace = true }
+rusvel-tool   = { workspace = true }
+rusvel-auth   = { workspace = true }
+rusvel-config = { workspace = true }
+rusvel-deploy = { workspace = true }
+
+# ─── Domain Engines ───
+forge-engine   = { workspace = true }
+code-engine    = { workspace = true }
+harvest-engine = { workspace = true }
+content-engine = { workspace = true }
+gtm-engine     = { workspace = true }
+finance-engine = { workspace = true }
+product-engine = { workspace = true }
+growth-engine  = { workspace = true }
+distro-engine  = { workspace = true }
+legal-engine   = { workspace = true }
+support-engine = { workspace = true }
+infra-engine   = { workspace = true }
+flow-engine    = { workspace = true }
+
+# ─── Department Apps (ADR-014) ───
+dept-forge     = { path = "../dept-forge" }
+dept-content   = { path = "../dept-content" }
+dept-code      = { path = "../dept-code" }
+dept-harvest   = { path = "../dept-harvest" }
+dept-flow      = { path = "../dept-flow" }
+dept-gtm       = { path = "../dept-gtm" }
+dept-finance   = { path = "../dept-finance" }
+dept-product   = { path = "../dept-product" }
+dept-growth    = { path = "../dept-growth" }
+dept-distro    = { path = "../dept-distro" }
+dept-legal     = { path = "../dept-legal" }
+dept-support   = { path = "../dept-support" }
+dept-infra     = { path = "../dept-infra" }
+dept-messaging = { path = "../dept-messaging" }
+
+# ─── RAG ───
+rusvel-embed  = { workspace = true }
+rusvel-vector = { workspace = true }
+
+# ─── Tools ───
+rusvel-builtin-tools = { workspace = true }
+rusvel-engine-tools = { workspace = true }
+
+# ─── Terminal ───
+rusvel-terminal = { workspace = true }
+rusvel-cdp      = { workspace = true }
+
+# ─── Surfaces ───
+rusvel-cli = { workspace = true }
+rusvel-api = { workspace = true }
+rusvel-mcp = { workspace = true }
+rusvel-tui = { workspace = true }
+
+# ─── Third-party ───
+tokio              = { workspace = true }
+tracing            = { workspace = true }
+tracing-subscriber = { workspace = true }
+clap               = { workspace = true }
+cliclack           = { workspace = true }
+anyhow             = { workspace = true }
+async-trait        = { workspace = true }
+serde_json         = { workspace = true }
+serde              = { workspace = true }
+toml               = { workspace = true }
+uuid               = { workspace = true }
+reqwest            = { workspace = true }
+chrono             = { workspace = true }
+rust-embed         = { workspace = true }
+
+[[bench]]
+name = "boot"
+harness = false
+
+[dev-dependencies]
+criterion = { workspace = true }
+tempfile = { workspace = true }
+rusvel-core = { workspace = true }
+rusvel-db = { workspace = true }
+
+[lints]
+workspace = true

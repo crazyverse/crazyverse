@@ -1,0 +1,15 @@
+[package]
+name = "rashk-wasm"
+description = "WASM module host: load, sandbox, and run capability modules"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+rashk-core = { path = "../rashk-core" }
+async-trait = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+wasmtime = { workspace = true }

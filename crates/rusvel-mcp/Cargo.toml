@@ -1,0 +1,37 @@
+[package]
+name = "rusvel-mcp"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "MCP (Model Context Protocol) server surface for RUSVEL"
+
+[dependencies]
+rusvel-core = { workspace = true }
+forge-engine = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+async-trait = { workspace = true }
+tokio = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+chrono = { workspace = true }
+uuid = { workspace = true }
+axum = { workspace = true }
+tower = { workspace = true }
+futures = { workspace = true }
+
+[dev-dependencies]
+async-trait = { workspace = true }
+rusvel-agent = { workspace = true }
+rusvel-config = { workspace = true }
+rusvel-db = { workspace = true }
+rusvel-event = { workspace = true }
+rusvel-memory = { workspace = true }
+rusvel-tool = { workspace = true }
+tempfile = "3"
+tower = { workspace = true }
+
+[lints]
+workspace = true

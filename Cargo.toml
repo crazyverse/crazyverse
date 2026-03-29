@@ -1,0 +1,236 @@
+[workspace]
+resolver = "2"
+members = [
+    # ─── RASHK Core (new layer) ───
+    "crates/rashk-core",
+    "crates/rashk-store",
+    "crates/rashk-wasm",
+    "crates/rashk-mesh",
+    "crates/rashk-identity",
+    "crates/rashk-app",
+
+    # ─── RUSVEL Foundation (ports + adapters) ───
+    "crates/rusvel-core",
+    "crates/rusvel-schema",
+    "crates/rusvel-db",
+    "crates/rusvel-llm",
+    "crates/rusvel-agent",
+    "crates/rusvel-event",
+    "crates/rusvel-memory",
+    "crates/rusvel-tool",
+    "crates/rusvel-builtin-tools",
+    "crates/rusvel-engine-tools",
+    "crates/rusvel-mcp-client",
+    "crates/rusvel-jobs",
+    "crates/rusvel-auth",
+    "crates/rusvel-config",
+    "crates/rusvel-deploy",
+    "crates/rusvel-embed",
+    "crates/rusvel-vector",
+    "crates/rusvel-terminal",
+    "crates/rusvel-cdp",
+    "crates/rusvel-webhook",
+    "crates/rusvel-cron",
+    "crates/rusvel-channel",
+    "crates/dept-messaging",
+
+    # ─── Domain Engines ───
+    "crates/forge-engine",
+    "crates/code-engine",
+    "crates/harvest-engine",
+    "crates/content-engine",
+    "crates/gtm-engine",
+    "crates/finance-engine",
+    "crates/product-engine",
+    "crates/growth-engine",
+    "crates/distro-engine",
+    "crates/legal-engine",
+    "crates/support-engine",
+    "crates/infra-engine",
+    "crates/flow-engine",
+
+    # ─── Department Apps (ADR-014) ───
+    "crates/dept-forge",
+    "crates/dept-content",
+    "crates/dept-code",
+    "crates/dept-harvest",
+    "crates/dept-flow",
+    "crates/dept-gtm",
+    "crates/dept-finance",
+    "crates/dept-product",
+    "crates/dept-growth",
+    "crates/dept-distro",
+    "crates/dept-legal",
+    "crates/dept-support",
+    "crates/dept-infra",
+
+    # ─── Surfaces ───
+    "crates/rusvel-api",
+    "crates/rusvel-cli",
+    "crates/rusvel-tui",
+    "crates/rusvel-mcp",
+    "crates/rusvel-app",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+authors = ["Mehdi Baneshi <mehdi@mbaneshi.click>"]
+repository = "https://github.com/AiRashk/rashk-rus"
+publish = false
+
+[workspace.dependencies]
+# Async
+tokio = { version = "1", features = ["full"] }
+async-trait = "0.1"
+futures = "0.3"
+
+# Web
+axum = { version = "0.8", features = ["ws"] }
+tokio-tungstenite = { version = "0.28", features = ["native-tls"] }
+tower = "0.5"
+tower-http = { version = "0.6", features = ["cors", "trace", "fs"] }
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Database
+rusqlite = { version = "0.32", features = ["bundled", "column_decltype"] }
+
+# CLI
+clap = { version = "4", features = ["derive"] }
+cliclack = "0.3"
+
+# TUI
+ratatui = "0.29"
+crossterm = "0.28"
+
+# REPL
+reedline = "0.38"
+
+# HTTP client
+reqwest = { version = "0.12", features = ["json", "stream"] }
+
+# MCP
+rmcp = { version = "0.16", features = ["server", "transport-sse", "transport-io"] }
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Error handling
+thiserror = "2"
+anyhow = "1"
+
+# Macros
+paste = "1"
+
+# Config
+toml = "0.8"
+
+# Time
+chrono = { version = "0.4", features = ["serde"] }
+
+# Email
+lettre = { version = "0.11", default-features = false, features = [
+    "tokio1",
+    "tokio1-native-tls",
+    "smtp-transport",
+    "builder",
+] }
+
+# ID generation
+uuid = { version = "1", features = ["v7", "serde"] }
+
+# Vector DB
+lancedb = "0.16"
+arrow = { version = "53", default-features = false, features = ["json"] }
+arrow-array = "53"
+arrow-schema = "53"
+
+# DAG workflows
+petgraph = "0.7"
+
+# Benchmarking / tests
+criterion = "0.5"
+tempfile = "3"
+
+# Embed frontend
+rust-embed = { version = "8", features = ["compression"] }
+
+# WASM
+wasmtime = "19"
+
+# Identity / crypto
+ed25519-dalek = { version = "2", features = ["serde"] }
+hex = "0.4"
+rand = "0.8"
+bytes = "1"
+dirs = "6"
+
+# ─── Internal crates (RUSVEL) ───
+rusvel-core = { path = "crates/rusvel-core" }
+rusvel-schema = { path = "crates/rusvel-schema" }
+rusvel-db = { path = "crates/rusvel-db" }
+rusvel-llm = { path = "crates/rusvel-llm" }
+rusvel-agent = { path = "crates/rusvel-agent" }
+rusvel-event = { path = "crates/rusvel-event" }
+rusvel-memory = { path = "crates/rusvel-memory" }
+rusvel-tool = { path = "crates/rusvel-tool" }
+rusvel-builtin-tools = { path = "crates/rusvel-builtin-tools" }
+rusvel-engine-tools = { path = "crates/rusvel-engine-tools" }
+rusvel-mcp-client = { path = "crates/rusvel-mcp-client" }
+rusvel-jobs = { path = "crates/rusvel-jobs" }
+rusvel-auth = { path = "crates/rusvel-auth" }
+rusvel-config = { path = "crates/rusvel-config" }
+rusvel-deploy = { path = "crates/rusvel-deploy" }
+rusvel-embed = { path = "crates/rusvel-embed" }
+rusvel-vector = { path = "crates/rusvel-vector" }
+rusvel-terminal = { path = "crates/rusvel-terminal" }
+rusvel-cdp = { path = "crates/rusvel-cdp" }
+rusvel-webhook = { path = "crates/rusvel-webhook" }
+rusvel-cron = { path = "crates/rusvel-cron" }
+rusvel-channel = { path = "crates/rusvel-channel" }
+forge-engine = { path = "crates/forge-engine" }
+code-engine = { path = "crates/code-engine" }
+harvest-engine = { path = "crates/harvest-engine" }
+content-engine = { path = "crates/content-engine" }
+gtm-engine = { path = "crates/gtm-engine" }
+finance-engine = { path = "crates/finance-engine" }
+product-engine = { path = "crates/product-engine" }
+growth-engine = { path = "crates/growth-engine" }
+distro-engine = { path = "crates/distro-engine" }
+legal-engine = { path = "crates/legal-engine" }
+support-engine = { path = "crates/support-engine" }
+infra-engine = { path = "crates/infra-engine" }
+flow-engine = { path = "crates/flow-engine" }
+rusvel-api = { path = "crates/rusvel-api" }
+rusvel-cli = { path = "crates/rusvel-cli" }
+rusvel-mcp = { path = "crates/rusvel-mcp" }
+rusvel-tui = { path = "crates/rusvel-tui" }
+
+# ─── Internal crates (RASHK) ───
+rashk-core = { path = "crates/rashk-core" }
+
+[workspace.lints.rust]
+unsafe_code = "deny"
+unused_must_use = "warn"
+
+[workspace.lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+module_name_repetitions = "allow"
+must_use_candidate = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+wildcard_imports = "allow"
+cast_possible_truncation = "allow"
+cast_sign_loss = "allow"
+cast_precision_loss = "allow"
+too_many_lines = "allow"
+
+[profile.release]
+lto = true
+strip = true
+codegen-units = 1

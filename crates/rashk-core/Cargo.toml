@@ -1,0 +1,15 @@
+[package]
+name = "rashk-core"
+description = "Universal port traits and domain types — the constitution of Rashk"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+async-trait = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+uuid = { workspace = true }
+chrono = { workspace = true }
+bytes = { workspace = true }
